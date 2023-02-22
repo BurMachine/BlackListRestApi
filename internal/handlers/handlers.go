@@ -1,15 +1,17 @@
 package handlers
 
 import (
+	"blacklistApi/internal/database"
 	gorilla "github.com/gorilla/mux"
 	"net/http"
 )
 
 type Handlers struct {
+	storage *database.Storage
 }
 
-func New() *Handlers {
-	return &Handlers{}
+func New(storage *database.Storage) *Handlers {
+	return &Handlers{storage: storage}
 }
 
 func (h *Handlers) RegisteringHandlers(mux *gorilla.Router) {

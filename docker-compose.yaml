@@ -1,0 +1,54 @@
+version: "3.4"
+
+services:
+  api:
+    build: .
+    container_name: Blacklist
+    networks:
+      - my_network
+    hostname: BlacklistApplication
+    depends_on:
+      -   postgres
+    environment:
+      - POSTGRES_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}?sslmode=disable
+    ports:
+      - "8080:8080"
+      - "9000:9000"
+    restart: on-failure
+# внутри микросервиса стучаться до postgres://postgres:5432
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgresContainerForBlacklist
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: Blacklist
+      PGDATA: /data/postgres
+    networks:
+      - my_network
+#    volumes:
+#      - ./postgres:/data/postgres
+    ports:
+#      - хост порт|порт контейнера
+      - "5433:5432" # если мы подключаемся внутри контейнера, то можно сразу стучаться на порт 5432 из pgadmin
+  pgadmin:
+    container_name: pgadminContainerForBlacklist
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ad@min.ru
+      PGADMIN_DEFAULT_PASSWORD: pgpassword
+    networks:
+      - my_network
+#    volumes:
+#      - './pgadmin:/var/lib/pgadmin'
+    ports:
+      - 8081:80
+#volumes:
+#  postgres_storage:
+#    name: BlacklistApplicationVolume
+
+networks:
+  my_network:
+    driver: bridge
+
+# контейнеры должны быть в одной сети

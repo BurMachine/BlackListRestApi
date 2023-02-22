@@ -2,6 +2,7 @@ package main
 
 import (
 	"blacklistApi/internal/config"
+	"blacklistApi/internal/database"
 	"blacklistApi/internal/server"
 	"flag"
 	"log"
@@ -18,7 +19,13 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	serv := server.New(*conf)
+
+	storage, err := database.InitConn(*conf)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	serv := server.New(*conf, storage)
 	err = serv.Run()
 	if err != nil {
 		log.Fatalln(err)

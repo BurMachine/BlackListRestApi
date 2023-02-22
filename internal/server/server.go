@@ -2,6 +2,7 @@ package server
 
 import (
 	"blacklistApi/internal/config"
+	"blacklistApi/internal/database"
 	"blacklistApi/internal/handlers"
 	gorilla "github.com/gorilla/mux"
 	"net/http"
@@ -15,8 +16,8 @@ type Server struct {
 	Handlers *handlers.Handlers
 }
 
-func New(conf config.Conf) *Server {
-	return &Server{conf: conf, Mux: gorilla.NewRouter(), Handlers: handlers.New()}
+func New(conf config.Conf, storage *database.Storage) *Server {
+	return &Server{conf: conf, Mux: gorilla.NewRouter(), Handlers: handlers.New(storage)}
 }
 
 func (s *Server) Run() error {
