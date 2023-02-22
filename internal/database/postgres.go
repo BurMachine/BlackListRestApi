@@ -21,6 +21,11 @@ var schema = `CREATE TABLE IF NOT EXISTS blacklist (
 	admin_name  VARCHAR(50) NOT NULL
 );`
 
+var tokenShema = `CREATE TABLE IF NOT EXISTS tokens (
+	id SERIAL PRIMARY KEY,
+	token  TEXT NOT NULL
+);`
+
 func InitConn(conf config.Conf) (*Storage, error) {
 	conn, err := pgx.Connect(context.Background(), os.Getenv("POSTGRES_URI"))
 	if err != nil {
@@ -32,7 +37,11 @@ func InitConn(conf config.Conf) (*Storage, error) {
 
 	_, err = conn.Exec(context.Background(), schema)
 	if err != nil {
-		return nil, fmt.Errorf("table creating error: %v", err)
+		return nil, fmt.Errorf("users table creating error: %v", err)
+	}
+	_, err = conn.Exec(context.Background(), tokenShema)
+	if err != nil {
+		return nil, fmt.Errorf("tokens table creating error: %v", err)
 	}
 	return &Storage{conn}, nil
 }

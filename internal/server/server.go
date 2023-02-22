@@ -35,7 +35,7 @@ func (s *Server) Run() error {
 		err = srv.ListenAndServe()
 		wg.Done()
 	}()
-	time.Sleep(time.Second)
+	s.Handlers.Logger.Info().Msg("server start")
 	wg.Wait()
 	if err != nil {
 		return err
