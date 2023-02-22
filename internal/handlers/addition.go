@@ -7,6 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"io"
 	"net/http"
+	"time"
 )
 
 // @Summary Add user to blacklist
@@ -36,6 +37,7 @@ func (h *Handlers) Addition(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	body.Date = time.Now()
 	err = h.storage.Add(body)
 	if err != nil {
 		h.Logger.WithLevel(zerolog.WarnLevel).Err(err).Msg("sql adding error")
