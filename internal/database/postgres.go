@@ -13,7 +13,7 @@ type Storage struct {
 }
 
 var schema = `CREATE TABLE IF NOT EXISTS blacklist (
-	id integer PRIMARY KEY  NOT NULL,
+	id SERIAL PRIMARY KEY,
 	phone_number VARCHAR(20) NOT NULL,
 	user_name  VARCHAR(50) NOT NULL,
 	reason_for_adding TEXT NOT NULL,
