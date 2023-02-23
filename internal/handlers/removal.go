@@ -30,7 +30,7 @@ func (h *Handlers) Removal(w http.ResponseWriter, r *http.Request) {
 	err := h.storage.Remove(id)
 	if err != nil {
 		h.Logger.WithLevel(zerolog.WarnLevel).Err(err).Msg("deletion error")
-		http.Error(w, errors.New("deletion error").Error(), http.StatusNotFound)
+		http.Error(w, errors.New("not found").Error(), http.StatusNotFound)
 		return
 	}
 
