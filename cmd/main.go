@@ -19,7 +19,6 @@ import (
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
-
 func main() {
 	cfgPath := flag.String("config", "./config.yaml", "Path to yaml configuration file")
 	flag.Parse()

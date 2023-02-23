@@ -16,7 +16,8 @@ import (
 // @ID search-users
 // @Accept  json
 // @Produce  json
-// @Param number query false "user phone"
+// @Param number query string false "user phone"
+// @Param name query string false "user name"
 // @Success 200 {integer} integer 1
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse

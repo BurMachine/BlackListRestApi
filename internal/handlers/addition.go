@@ -17,14 +17,14 @@ import (
 // @ID add-into-blacklist
 // @Accept  json
 // @Produce  json
-// @Param input body models.Addiction true "user info"
+// @Param input body models.AddictionWithoutTime true "user info"
 // @Success 200 {integer} integer 1
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /add [post]
 func (h *Handlers) Addition(w http.ResponseWriter, r *http.Request) {
-	var body models.Addiction
+	var body models.AddictionWithoutTime
 	bodyBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		h.Logger.WithLevel(zerolog.WarnLevel).Err(err).Msg("parse body error")
@@ -37,8 +37,9 @@ func (h *Handlers) Addition(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	body.Date = time.Now()
-	err = h.storage.Add(body)
+	res := models.Addiction{UserPhone: body.UserPhone, UserName: body.UserName, Reason: body.Reason, AdminName: body.AdminName}
+	res.Date = time.Now()
+	err = h.storage.Add(res)
 	if err != nil {
 		h.Logger.WithLevel(zerolog.WarnLevel).Err(err).Msg("sql adding error")
 		http.Error(w, err.Error(), http.StatusInternalServerError)

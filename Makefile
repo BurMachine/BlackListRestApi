@@ -9,3 +9,10 @@ rm_containers:
 	docker rmi blacklist_api
 	docker rmi dpage/pgadmin4
 	#docker rmi postgresContainerForPlaylistService
+
+swagger:
+	go install github.com/swaggo/swag/cmd/swag@latest
+	swag init -g cmd/main.go
+
+local-build:
+	go run cmd/main.go

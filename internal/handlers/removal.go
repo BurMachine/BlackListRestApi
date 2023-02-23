@@ -14,7 +14,7 @@ import (
 // @ID delete-from-blacklist
 // @Accept  json
 // @Produce  json
-// @Param id query true "user id"
+// @Param id query int true "ID of user to remove from blacklist"
 // @Success 200 {integer} integer 1
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
