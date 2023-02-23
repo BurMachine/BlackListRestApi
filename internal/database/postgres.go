@@ -4,7 +4,7 @@ import (
 	"blacklistApi/internal/config"
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5"
+	pgx "github.com/jackc/pgx/v5"
 	"os"
 )
 
@@ -27,13 +27,19 @@ var tokenShema = `CREATE TABLE IF NOT EXISTS tokens (
 );`
 
 func InitConn(conf config.Conf) (*Storage, error) {
-	conn, err := pgx.Connect(context.Background(), os.Getenv("POSTGRES_URI"))
+	dsn := os.Getenv("POSTGRES_URI")
+	conn, err := pgx.Connect(context.Background(), dsn)
 	if err != nil {
+		fmt.Println(conn, dsn)
+		fmt.Println(err)
 		conn, err = pgx.Connect(context.Background(), conf.DbUrl)
 		if err != nil {
+			fmt.Println(conn, dsn, err)
 			return &Storage{}, err
 		}
 	}
+
+	fmt.Println(conn, "addr conn2")
 
 	_, err = conn.Exec(context.Background(), schema)
 	if err != nil {

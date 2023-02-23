@@ -6,9 +6,14 @@ build:
 .PHONY = rm_containers
 rm_containers:
 	docker compose down
-	docker rmi blacklist_api
+	docker rmi blacklistrestapi_api
 	docker rmi dpage/pgadmin4
 	#docker rmi postgresContainerForPlaylistService
+
+restart:
+	docker compose down
+	docker rmi blacklistrestapi_api
+	docker compose up -d
 
 swagger:
 	go install github.com/swaggo/swag/cmd/swag@latest

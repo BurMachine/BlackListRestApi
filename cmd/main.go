@@ -34,14 +34,14 @@ func main() {
 
 	storage, err := database.InitConn(*conf)
 	if err != nil {
-		logger.Fatal().Err(err)
+		logger.Fatal().Err(err).Msg("connection init error")
+		return
 	}
 
 	serv := server.New(*conf, storage)
 	serv.Handlers.Logger = &logger
 	err = serv.Run()
 	if err != nil {
-		logger.Fatal().Err(err)
+		logger.Fatal().Err(err).Msg("server runnig error")
 	}
-
 }
